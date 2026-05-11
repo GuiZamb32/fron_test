@@ -8,7 +8,7 @@ O **QuimioAnalytics** é uma plataforma analítica avançada desenvolvida para o
 
 ---
 
-## 📊 Visão Geral da Solução
+##  Visão Geral da Solução
 
 O sistema atua na camada de apresentação (Frontend) de um ecossistema ETL, permitindo que pesquisadores e analistas interajam com dados de identificação de compostos, verifiquem probabilidades analíticas e gerenciem o fluxo de dados brutos para processamento.
 
@@ -20,7 +20,7 @@ O sistema atua na camada de apresentação (Frontend) de um ecossistema ETL, per
 
 ---
 
-## 🛠️ Stack Tecnológica
+##  Stack Tecnológica
 
 ### Frontend & Core
 - **React 18:** Com hooks customizados para gerenciamento de estado.
@@ -34,7 +34,7 @@ O sistema atua na camada de apresentação (Frontend) de um ecossistema ETL, per
 
 ---
 
-## 🎨 Design System (Tokens de Cor)
+##  Design System (Tokens de Cor)
 
 A interface utiliza um tema **Dark Mode** de alto contraste, otimizado para longos períodos de análise laboratorial:
 
@@ -48,7 +48,7 @@ A interface utiliza um tema **Dark Mode** de alto contraste, otimizado para long
 
 ---
 
-## 🚀 Instalação e Execução
+##  Instalação e Execução
 
 ### Pré-requisitos
 - Node.js (v18 ou superior)
@@ -79,7 +79,7 @@ A interface utiliza um tema **Dark Mode** de alto contraste, otimizado para long
 
 ---
 
-## 📂 Arquitetura de Diretórios
+##  Arquitetura de Diretórios
 
 ```text
 src/
