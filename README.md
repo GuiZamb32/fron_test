@@ -6,8 +6,8 @@
 
 O **QuimioAnalytics** é uma plataforma analítica avançada desenvolvida para o **IST Ambiental**, focada no processamento e visualização de dados provenientes de pipelines ETL de espectrometria de massa. O sistema integra resultados complexos de identificação química em uma interface intuitiva para suporte à tomada de decisão.
 
----
 
+<br><br>
 ##  Visão Geral da Solução
 
 O sistema atua na camada de apresentação (Frontend) de um ecossistema ETL, permitindo que pesquisadores e analistas interajam com dados de identificação de compostos, verifiquem probabilidades analíticas e gerenciem o fluxo de dados brutos para processamento.
@@ -18,8 +18,8 @@ O sistema atua na camada de apresentação (Frontend) de um ecossistema ETL, per
 - **ETL Management (Upload):** Interface para ingestão de datasets de Abundância e Identificação.
 - **Chemical Knowledge Base:** Consultas rápidas a referências integradas (PubChem, ChEBI, ChemSpider).
 
----
 
+<br><br>
 ##  Stack Tecnológica
 
 ### Frontend & Core
@@ -32,8 +32,8 @@ O sistema atua na camada de apresentação (Frontend) de um ecossistema ETL, per
 - **Lucide React:** Conjunto de ícones consistentes para interfaces técnicas.
 - **CSS3 Variables:** Arquitetura de estilos baseada em design tokens (Paleta IST Ambiental).
 
----
 
+<br><br>
 ##  Design System (Tokens de Cor)
 
 A interface utiliza um tema **Dark Mode** de alto contraste, otimizado para longos períodos de análise laboratorial:
@@ -46,8 +46,8 @@ A interface utiliza um tema **Dark Mode** de alto contraste, otimizado para long
 | **Surface Dark** | `#0D0D0D` | Fundo principal da aplicação. |
 | **Surface Elevated**| `#191919` | Cards, modais e containers de tabelas. |
 
----
 
+<br><br>
 ##  Instalação e Execução
 
 ### Pré-requisitos
@@ -77,8 +77,8 @@ A interface utiliza um tema **Dark Mode** de alto contraste, otimizado para long
     npm run build
     ```
 
----
 
+<br><br>
 ##  Arquitetura de Diretórios
 
 ```text
