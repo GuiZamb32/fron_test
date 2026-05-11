@@ -82,13 +82,19 @@ A interface utiliza um tema **Dark Mode** de alto contraste, otimizado para long
 
 ```text
 src/
-├── assets/          # Recursos estáticos (Logos, imagens)
-├── components/      # Componentes globais (Navbar, Shared UI)
-├── pages/           # Views principais da aplicação (Smart Components)
-│   ├── Dashboard/   # Analytics e Gráficos
-│   ├── Ranking/     # Tabelas de probabilidade
-│   ├── Upload/      # Gestão de arquivos e ETL
-│   └── Reference/   # Base de dados químicos
-├── styles/          # Definições globais de CSS e Design Tokens
-├── App.jsx          # Configuração de rotas e Context Provider
-└── main.jsx         # Ponto de entrada do DOM
+├── components/          # Componentes globais reutilizáveis
+│   ├── Navbar.jsx       # Navegação principal
+│   └── Navbar.css       # Estilização modular da Navbar
+├── pages/               # Views principais da aplicação
+│   ├── ChemicalRef.jsx  # Base de dados químicos
+│   ├── ChemicalRef.css  # Estilos da Base de dados
+│   ├── Dashboard.jsx    # Analytics e Gráficos Recharts
+│   ├── Dashboard.css    # Estilos do Dashboard e Grids
+│   ├── Top5Ranking.jsx  # Tabelas de probabilidade
+│   ├── Top5Ranking.css  # Estilos do Ranking e Badges
+│   ├── Upload.jsx       # Gestão de arquivos e ETL
+│   └── Upload.css       # Estilos da área de dropzone
+├── App.jsx              # Configuração de rotas (React Router)
+├── App.css              # Estilos globais de layout e containers
+├── index.css            # Design Tokens (Variáveis de cores e fontes)
+└── main.jsx             # Ponto de entrada da aplicação
