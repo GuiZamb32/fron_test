@@ -1,11 +1,9 @@
 import { useState } from 'react'
 import { Upload as UploadIcon, FileSpreadsheet, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
+import './Upload.css'
 
 function Upload() {
-  const [files, setFiles] = useState({
-    identification: null,
-    abundance: null
-  })
+  const [files, setFiles] = useState({ identification: null, abundance: null })
   const [uploadStatus, setUploadStatus] = useState(null)
   const [isProcessing, setIsProcessing] = useState(false)
   
@@ -19,16 +17,10 @@ function Upload() {
   
   const handleUpload = async () => {
     if (!files.identification || !files.abundance) {
-      setUploadStatus({
-        type: 'error',
-        message: 'Por favor, selecione ambos os arquivos antes de enviar.'
-      })
+      setUploadStatus({ type: 'error', message: 'Por favor, selecione ambos os arquivos antes de enviar.' })
       return
     }
-    
     setIsProcessing(true)
-    
-    // Simular upload e processamento
     setTimeout(() => {
       setUploadStatus({
         type: 'success',
@@ -43,220 +35,104 @@ function Upload() {
     }, 3000)
   }
   
-  const handleReset = () => {
-    setFiles({ identification: null, abundance: null })
-    setUploadStatus(null)
-  }
-  
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-branco-text mb-2">Upload de Planilhas</h1>
-        <p className="text-cinza-muted">Envie as planilhas de Identificação e Abundância para processamento ETL</p>
-      </div>
+    <div className="upload-page">
+      <header className="page-header">
+        <h1 className="page-title">Upload de Planilhas</h1>
+        <p className="page-subtitle">Envie as planilhas de Identificação e Abundância para processamento ETL</p>
+      </header>
       
       {/* Card de Instruções */}
-      <div className="card bg-azul-primary/10 border-azul-primary/30">
-        <div className="flex items-start space-x-3">
-          <AlertTriangle className="text-azul-primary mt-1" size={24} />
-          <div>
-            <h3 className="text-azul-primary font-semibold mb-2">Instruções de Upload</h3>
-            <ul className="text-cinza-muted text-sm space-y-1">
-              <li>• Selecione a planilha de <strong>Identificação</strong> (.xlsx ou .csv)</li>
-              <li>• Selecione a planilha de <strong>Abundância</strong> (.xlsx ou .csv)</li>
-              <li>• Os arquivos serão processados automaticamente pelo pipeline ETL</li>
-              <li>• Aguarde a confirmação antes de sair da página</li>
-            </ul>
-          </div>
+      <div className="alert-card info">
+        <AlertTriangle className="alert-icon" size={24} />
+        <div className="alert-content">
+          <h3>Instruções de Upload</h3>
+          <ul className="instruction-list">
+            <li>Selecione a planilha de <strong>Identificação</strong> (.xlsx ou .csv)</li>
+            <li>Selecione a planilha de <strong>Abundância</strong> (.xlsx ou .csv)</li>
+            <li>Aguarde a confirmação antes de sair da página</li>
+          </ul>
         </div>
       </div>
       
       {/* Upload Area */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Upload Identificação */}
-        <div className="card">
-          <div className="text-center">
-            <FileSpreadsheet className="mx-auto mb-4 text-verde-accent" size={48} />
-            <h3 className="text-lg font-semibold text-branco-text mb-2">Planilha de Identificação</h3>
-            <p className="text-cinza-muted text-sm mb-4">
-              Contém dados de m/z, RT, fórmula molecular e candidatos
-            </p>
-            
-            <label 
-              htmlFor="identification-upload"
-              className="btn-secondary cursor-pointer inline-flex items-center space-x-2"
-            >
-              <UploadIcon size={18} />
-              <span>{files.identification ? 'Alterar Arquivo' : 'Selecionar Arquivo'}</span>
-            </label>
-            <input
-              id="identification-upload"
-              type="file"
-              accept=".xlsx,.csv"
-              onChange={(e) => handleFileChange('identification', e)}
-              className="hidden"
-            />
-            
-            {files.identification && (
-              <div className="mt-4 p-3 bg-preto-pure rounded-lg">
-                <p className="text-verde-accent font-medium flex items-center justify-center space-x-2">
-                  <CheckCircle size={16} />
-                  <span>{files.identification.name}</span>
-                </p>
-                <p className="text-cinza-muted text-xs mt-1">
-                  {(files.identification.size / 1024).toFixed(2)} KB
-                </p>
+      <div className="upload-grid">
+        {/* Card Identificação */}
+        <div className="upload-card">
+          <FileSpreadsheet className="icon-main text-verde" size={48} />
+          <h3>Planilha de Identificação</h3>
+          <p>Contém dados de m/z, RT, fórmula molecular e candidatos</p>
+          
+          <label htmlFor="id-upload" className="btn btn-secondary">
+            <UploadIcon size={18} />
+            <span>{files.identification ? 'Alterar Arquivo' : 'Selecionar Arquivo'}</span>
+          </label>
+          <input id="id-upload" type="file" accept=".xlsx,.csv" className="hidden" 
+                 onChange={(e) => handleFileChange('identification', e)} />
+          
+          {files.identification && (
+            <div className="file-info success">
+              <CheckCircle size={16} />
+              <div className="file-meta">
+                <span className="file-name">{files.identification.name}</span>
+                <span className="file-size">{(files.identification.size / 1024).toFixed(2)} KB</span>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
         
-        {/* Upload Abundância */}
-        <div className="card">
-          <div className="text-center">
-            <FileSpreadsheet className="mx-auto mb-4 text-azul-primary" size={48} />
-            <h3 className="text-lg font-semibold text-branco-text mb-2">Planilha de Abundância</h3>
-            <p className="text-cinza-muted text-sm mb-4">
-              Contém valores de abundância por amostra e replicata
-            </p>
-            
-            <label 
-              htmlFor="abundance-upload"
-              className="btn-primary cursor-pointer inline-flex items-center space-x-2"
-            >
-              <UploadIcon size={18} />
-              <span>{files.abundance ? 'Alterar Arquivo' : 'Selecionar Arquivo'}</span>
-            </label>
-            <input
-              id="abundance-upload"
-              type="file"
-              accept=".xlsx,.csv"
-              onChange={(e) => handleFileChange('abundance', e)}
-              className="hidden"
-            />
-            
-            {files.abundance && (
-              <div className="mt-4 p-3 bg-preto-pure rounded-lg">
-                <p className="text-azul-primary font-medium flex items-center justify-center space-x-2">
-                  <CheckCircle size={16} />
-                  <span>{files.abundance.name}</span>
-                </p>
-                <p className="text-cinza-muted text-xs mt-1">
-                  {(files.abundance.size / 1024).toFixed(2)} KB
-                </p>
+        {/* Card Abundância */}
+        <div className="upload-card">
+          <FileSpreadsheet className="icon-main text-azul" size={48} />
+          <h3>Planilha de Abundância</h3>
+          <p>Contém valores de abundância por amostra e replicata</p>
+          
+          <label htmlFor="ab-upload" className="btn btn-primary">
+            <UploadIcon size={18} />
+            <span>{files.abundance ? 'Alterar Arquivo' : 'Selecionar Arquivo'}</span>
+          </label>
+          <input id="ab-upload" type="file" accept=".xlsx,.csv" className="hidden"
+                 onChange={(e) => handleFileChange('abundance', e)} />
+          
+          {files.abundance && (
+            <div className="file-info info">
+              <CheckCircle size={16} />
+              <div className="file-meta">
+                <span className="file-name">{files.abundance.name}</span>
+                <span className="file-size">{(files.abundance.size / 1024).toFixed(2)} KB</span>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
       
       {/* Botões de Ação */}
-      <div className="flex items-center justify-center space-x-4">
-        <button
-          onClick={handleReset}
-          className="px-8 py-3 bg-cinza-dark text-branco-text rounded-lg hover:bg-cinza-muted transition-colors"
-          disabled={isProcessing}
-        >
+      <div className="actions-bar">
+        <button onClick={() => setFiles({identification:null, abundance:null})} className="btn btn-ghost" disabled={isProcessing}>
           Limpar Seleção
         </button>
-        <button
-          onClick={handleUpload}
-          className="btn-primary px-8 py-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          disabled={!files.identification || !files.abundance || isProcessing}
-        >
+        <button onClick={handleUpload} className="btn btn-primary large" 
+                disabled={!files.identification || !files.abundance || isProcessing}>
           {isProcessing ? 'Processando...' : 'Iniciar ETL'}
         </button>
       </div>
       
-      {/* Status do Upload */}
+      {/* Status e Histórico simplificados abaixo */}
       {uploadStatus && (
-        <div className={`card ${
-          uploadStatus.type === 'success' 
-            ? 'bg-verde-accent/10 border-verde-accent/30' 
-            : 'bg-vermelho-alert/10 border-vermelho-alert/30'
-        }`}>
-          <div className="flex items-start space-x-3">
-            {uploadStatus.type === 'success' ? (
-              <CheckCircle className="text-verde-accent mt-1" size={24} />
-            ) : (
-              <XCircle className="text-vermelho-alert mt-1" size={24} />
-            )}
-            <div className="flex-1">
-              <h3 className={`font-semibold mb-2 ${
-                uploadStatus.type === 'success' ? 'text-verde-accent' : 'text-vermelho-alert'
-              }`}>
-                {uploadStatus.type === 'success' ? 'Sucesso!' : 'Erro'}
-              </h3>
-              <p className="text-branco-text mb-3">{uploadStatus.message}</p>
-              
-              {uploadStatus.details && (
-                <div className="bg-preto-pure rounded-lg p-4 space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-cinza-muted">Linhas de Identificação:</span>
-                    <span className="text-branco-text font-medium">
-                      {uploadStatus.details.identification_rows}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-cinza-muted">Linhas de Abundância:</span>
-                    <span className="text-branco-text font-medium">
-                      {uploadStatus.details.abundance_rows}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-cinza-muted">Batch Name:</span>
-                    <span className="text-verde-accent font-mono text-sm">
-                      {uploadStatus.details.batch_name}
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+        <div className={`status-card ${uploadStatus.type}`}>
+           <header className="status-header">
+             {uploadStatus.type === 'success' ? <CheckCircle size={24}/> : <XCircle size={24}/>}
+             <h3>{uploadStatus.type === 'success' ? 'Pipeline Iniciado' : 'Falha no Upload'}</h3>
+           </header>
+           <p>{uploadStatus.message}</p>
+           {uploadStatus.details && (
+             <div className="details-box">
+               <div className="detail-row"><span>Batch ID:</span> <code className="text-verde">{uploadStatus.details.batch_name}</code></div>
+               <div className="detail-row"><span>Total Processado:</span> <span>{uploadStatus.details.identification_rows + uploadStatus.details.abundance_rows} linhas</span></div>
+             </div>
+           )}
         </div>
       )}
-      
-      {/* Histórico de Uploads */}
-      <div className="card">
-        <h2 className="text-xl font-bold text-branco-text mb-4">Histórico de Uploads</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="table-header">
-                <th className="px-4 py-3 text-left">Data/Hora</th>
-                <th className="px-4 py-3 text-left">Batch</th>
-                <th className="px-4 py-3 text-left">Arquivos</th>
-                <th className="px-4 py-3 text-left">Registros</th>
-                <th className="px-4 py-3 text-left">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="table-row">
-                <td className="px-4 py-3 text-cinza-muted">2026-05-05 13:45</td>
-                <td className="px-4 py-3 font-mono text-sm">MERGE_RESULTADO_20260505</td>
-                <td className="px-4 py-3 text-branco-text">2 arquivos</td>
-                <td className="px-4 py-3 text-cinza-muted">1,248</td>
-                <td className="px-4 py-3">
-                  <span className="px-2 py-1 bg-verde-accent/20 text-verde-accent rounded text-sm">
-                    Completo
-                  </span>
-                </td>
-              </tr>
-              <tr className="table-row">
-                <td className="px-4 py-3 text-cinza-muted">2026-05-04 16:22</td>
-                <td className="px-4 py-3 font-mono text-sm">UPLOAD_20260504</td>
-                <td className="px-4 py-3 text-branco-text">2 arquivos</td>
-                <td className="px-4 py-3 text-cinza-muted">987</td>
-                <td className="px-4 py-3">
-                  <span className="px-2 py-1 bg-verde-accent/20 text-verde-accent rounded text-sm">
-                    Completo
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   )
 }

@@ -5,13 +5,14 @@ import Top5Ranking from './pages/Top5Ranking'
 import Upload from './pages/Upload'
 import ChemicalRef from './pages/ChemicalRef'
 import './index.css'
+import './App.css'
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-preto-deep">
+      <div className="app-layout">
         <Navbar />
-        <main className="container mx-auto px-4 py-8">
+        <main className="main-content">
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { Database, Beaker, FileCheck, Activity } from 'lucide-react'
+import './Dashboard.css'
 
 function Dashboard() {
   const [stats, setStats] = useState({
@@ -10,7 +11,6 @@ function Dashboard() {
     externalSources: 0
   })
   
-  // Dados de exemplo para os gráficos
   const abundanceData = [
     { sample: 'Amostra 1', abundance: 45000 },
     { sample: 'Amostra 2', abundance: 38000 },
@@ -26,7 +26,6 @@ function Dashboard() {
   ]
   
   useEffect(() => {
-    // Simular carregamento de dados da API
     setTimeout(() => {
       setStats({
         totalFeatures: 1248,
@@ -38,167 +37,153 @@ function Dashboard() {
   }, [])
   
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-branco-text mb-2">Dashboard Analítico</h1>
-        <p className="text-cinza-muted">Visão geral dos dados integrados do QuimioAnalytics</p>
-      </div>
+    <div className="dashboard-container">
+      <header className="dashboard-header">
+        <h1 className="dashboard-title">Dashboard Analítico</h1>
+        <p className="dashboard-subtitle">Visão geral dos dados integrados do QuimioAnalytics</p>
+      </header>
       
       {/* Cards de Estatísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="card bg-gradient-to-br from-preto-elevated to-preto-pure border-verde-accent/20">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-cinza-muted text-sm mb-1">Total de Features</p>
-              <p className="text-3xl font-bold text-verde-accent">{stats.totalFeatures}</p>
+      <div className="stats-grid">
+        <div className="stat-card border-verde">
+          <div className="stat-content">
+            <div className="stat-text">
+              <p className="stat-label">Total de Features</p>
+              <p className="stat-value text-verde">{stats.totalFeatures}</p>
             </div>
-            <Database className="text-verde-accent" size={40} />
+            <Database className="stat-icon text-verde" size={40} />
           </div>
         </div>
         
-        <div className="card bg-gradient-to-br from-preto-elevated to-preto-pure border-azul-primary/20">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-cinza-muted text-sm mb-1">Candidatos</p>
-              <p className="text-3xl font-bold text-azul-primary">{stats.totalCandidates}</p>
+        <div className="stat-card border-azul">
+          <div className="stat-content">
+            <div className="stat-text">
+              <p className="stat-label">Candidatos</p>
+              <p className="stat-value text-azul">{stats.totalCandidates}</p>
             </div>
-            <Beaker className="text-azul-primary" size={40} />
+            <Beaker className="stat-icon text-azul" size={40} />
           </div>
         </div>
         
-        <div className="card bg-gradient-to-br from-preto-elevated to-preto-pure border-verde-medium/20">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-cinza-muted text-sm mb-1">Compostos Ref.</p>
-              <p className="text-3xl font-bold text-verde-medium">{stats.totalCompounds}</p>
+        <div className="stat-card border-verde-medium">
+          <div className="stat-content">
+            <div className="stat-text">
+              <p className="stat-label">Compostos Ref.</p>
+              <p className="stat-value text-verde-medium">{stats.totalCompounds}</p>
             </div>
-            <FileCheck className="text-verde-medium" size={40} />
+            <FileCheck className="stat-icon text-verde-medium" size={40} />
           </div>
         </div>
         
-        <div className="card bg-gradient-to-br from-preto-elevated to-preto-pure border-azul-light/20">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-cinza-muted text-sm mb-1">Fontes Externas</p>
-              <p className="text-3xl font-bold text-azul-light">{stats.externalSources}</p>
+        <div className="stat-card border-azul-light">
+          <div className="stat-content">
+            <div className="stat-text">
+              <p className="stat-label">Fontes Externas</p>
+              <p className="stat-value text-azul-light">{stats.externalSources}</p>
             </div>
-            <Activity className="text-azul-light" size={40} />
+            <Activity className="stat-icon text-azul-light" size={40} />
           </div>
         </div>
       </div>
       
-      {/* Gráficos */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    {/* Seção de Gráficos Lado a Lado */}
+      <div className="charts-grid">
+        
         {/* Gráfico de Abundância */}
-        <div className="card">
-          <h2 className="text-xl font-bold text-branco-text mb-4">Abundância por Amostra</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={abundanceData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#424242" />
-              <XAxis dataKey="sample" stroke="#737373" />
-              <YAxis stroke="#737373" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#111111', 
-                  border: '1px solid #424242',
-                  borderRadius: '8px'
-                }}
-              />
-              <Bar dataKey="abundance" fill="#04BDA2" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+        <div className="chart-card">
+          <h2 className="chart-title">Abundância por Amostra</h2>
+          <div className="chart-wrapper">
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={abundanceData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#424242" vertical={false} />
+                <XAxis dataKey="sample" stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="#737373" fontSize={12} tickLine={false} axisLine={false} />
+                <Tooltip 
+                  cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }} 
+                  contentStyle={{ 
+                    backgroundColor: '#111111', 
+                    border: '1px solid #424242',
+                    borderRadius: '8px',
+                    color: '#fff'
+                  }}
+                  itemStyle={{ color: '#04BDA2' }}
+                />
+                <Bar dataKey="abundance" fill="#04BDA2" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-        
+
         {/* Gráfico de Distribuição de Fontes */}
-        <div className="card">
-          <h2 className="text-xl font-bold text-branco-text mb-4">Distribuição por Fonte</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={sourceDistribution}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                outerRadius={100}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {sourceDistribution.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#111111', 
-                  border: '1px solid #424242',
-                  borderRadius: '8px'
-                }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+        <div className="chart-card">
+          <h2 className="chart-title">Distribuição por Fonte</h2>
+          <div className="chart-wrapper">
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={sourceDistribution}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={5}
+                  dataKey="value"
+                  label={{ fill: '#ffffff', fontSize: 12 }}
+                >
+                  {sourceDistribution.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: '#111111', 
+                    border: '1px solid #424242',
+                    borderRadius: '8px',
+                    color: '#fff'
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </div>
+
+      </div> 
       
-      {/* Tabela de Últimas Atualizações */}
-      <div className="card">
-        <h2 className="text-xl font-bold text-branco-text mb-4">Últimas Atualizações</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full">
+      {/* Tabela */}
+      <div className="table-card">
+        <h2 className="chart-title">Últimas Atualizações</h2>
+        <div className="table-responsive">
+          <table className="dashboard-table">
             <thead>
-              <tr className="table-header">
-                <th className="px-4 py-3 text-left">Batch</th>
-                <th className="px-4 py-3 text-left">Tipo</th>
-                <th className="px-4 py-3 text-left">Data</th>
-                <th className="px-4 py-3 text-left">Registros</th>
-                <th className="px-4 py-3 text-left">Status</th>
+              <tr>
+                <th>Batch</th>
+                <th>Tipo</th>
+                <th>Data</th>
+                <th>Registros</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="table-row">
-                <td className="px-4 py-3">TOP5_RANKING_MERGE</td>
-                <td className="px-4 py-3">
-                  <span className="px-2 py-1 bg-verde-accent/20 text-verde-accent rounded text-sm">
-                    Ranking
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-cinza-muted">2026-05-05 14:32</td>
-                <td className="px-4 py-3">6,240</td>
-                <td className="px-4 py-3">
-                  <span className="px-2 py-1 bg-azul-primary/20 text-azul-primary rounded text-sm">
-                    Completo
-                  </span>
-                </td>
+              <tr>
+                <td className="font-medium">TOP5_RANKING_MERGE</td>
+                <td><span className="badge badge-verde">Ranking</span></td>
+                <td className="text-muted">2026-05-05 14:32</td>
+                <td>6,240</td>
+                <td><span className="badge badge-azul">Completo</span></td>
               </tr>
-              <tr className="table-row">
-                <td className="px-4 py-3">PUBCHEM_IMPORT_2026</td>
-                <td className="px-4 py-3">
-                  <span className="px-2 py-1 bg-azul-primary/20 text-azul-primary rounded text-sm">
-                    Externa
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-cinza-muted">2026-05-05 14:15</td>
-                <td className="px-4 py-3">450</td>
-                <td className="px-4 py-3">
-                  <span className="px-2 py-1 bg-azul-primary/20 text-azul-primary rounded text-sm">
-                    Completo
-                  </span>
-                </td>
+              <tr>
+                <td className="font-medium">PUBCHEM_IMPORT_2026</td>
+                <td><span className="badge badge-azul">Externa</span></td>
+                <td className="text-muted">2026-05-05 14:15</td>
+                <td>450</td>
+                <td><span className="badge badge-azul">Completo</span></td>
               </tr>
-              <tr className="table-row">
-                <td className="px-4 py-3">MERGE_RESULTADO_20260505</td>
-                <td className="px-4 py-3">
-                  <span className="px-2 py-1 bg-vermelho-alert/20 text-vermelho-alert rounded text-sm">
-                    Interna
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-cinza-muted">2026-05-05 13:45</td>
-                <td className="px-4 py-3">1,248</td>
-                <td className="px-4 py-3">
-                  <span className="px-2 py-1 bg-azul-primary/20 text-azul-primary rounded text-sm">
-                    Completo
-                  </span>
-                </td>
+              <tr>
+                <td className="font-medium">MERGE_RESULTADO_20260505</td>
+                <td><span className="badge badge-vermelho">Interna</span></td>
+                <td className="text-muted">2026-05-05 13:45</td>
+                <td>1,248</td>
+                <td><span className="badge badge-azul">Completo</span></td>
               </tr>
             </tbody>
           </table>

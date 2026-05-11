@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 import { Search, Download, Filter, TrendingUp, AlertCircle } from 'lucide-react'
+import './Top5Ranking.css'
 
 function Top5Ranking() {
   const [searchTerm, setSearchTerm] = useState('')
   const [rankingData, setRankingData] = useState([])
   const [selectedFeature, setSelectedFeature] = useState(null)
   
-  useEffect(() => {
-    // Simular carregamento de dados do Top 5
+    // Dados de exemplo (Mock)
+   useEffect(() => {
     const mockData = [
       {
         feature_id: 'F_001',
@@ -48,124 +49,99 @@ function Top5Ranking() {
     ]
     setRankingData(mockData)
   }, [])
-  
+
+  // ESTA É A VARIÁVEL QUE ESTAVA FALTANDO:
   const filteredData = rankingData.filter(feature =>
     feature.feature_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
     feature.candidates.some(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()))
   )
-  
-  const getProbabilityColor = (prob) => {
-    if (prob >= 0.8) return 'text-verde-accent'
-    if (prob >= 0.6) return 'text-azul-primary'
-    if (prob >= 0.4) return 'text-cinza-muted'
-    return 'text-vermelho-alert'
+
+  const getProbClass = (prob) => {
+    if (prob >= 0.8) return 'prob-high'
+    if (prob >= 0.6) return 'prob-medium'
+    return 'prob-low'
   }
-  
-  const getSourceBadgeColor = (source) => {
-    const colors = {
-      'PubChem': 'bg-verde-accent/20 text-verde-accent',
-      'ChEBI': 'bg-azul-primary/20 text-azul-primary',
-      'ChemSpider': 'bg-vermelho-alert/20 text-vermelho-alert'
-    }
-    return colors[source] || 'bg-cinza-dark/20 text-cinza-muted'
-  }
-  
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-branco-text mb-2">Top 5 Ranking</h1>
-          <p className="text-cinza-muted">Candidatos ranqueados por probabilidade analítica</p>
+    <div className="ranking-container">
+      <header className="ranking-header">
+        <div className="header-text">
+          <h1 className="page-title">Top 5 Ranking</h1>
+          <p className="page-subtitle">Candidatos ranqueados por probabilidade analítica</p>
         </div>
-        <button className="btn-primary flex items-center space-x-2">
+        <button className="btn btn-primary">
           <Download size={18} />
           <span>Exportar Parquet</span>
         </button>
-      </div>
+      </header>
       
-      {/* Barra de Busca e Filtros */}
-      <div className="card">
-        <div className="flex items-center space-x-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cinza-muted" size={20} />
-            <input
-              type="text"
-              placeholder="Buscar por Feature ID ou nome do composto..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="input-field pl-10 w-full"
-            />
-          </div>
-          <button className="btn-secondary flex items-center space-x-2">
-            <Filter size={18} />
-            <span>Filtros</span>
-          </button>
+      <section className="filter-section">
+        <div className="search-wrapper">
+          <Search className="search-icon" size={20} />
+          <input
+            type="text"
+            placeholder="Buscar por Feature ID ou nome..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="input-field"
+          />
         </div>
-      </div>
+        <button className="btn btn-secondary">
+          <Filter size={18} />
+          <span>Filtros</span>
+        </button>
+      </section>
       
-      {/* Lista de Features com Ranking */}
-      <div className="space-y-4">
+      <div className="features-list">
         {filteredData.map((feature) => (
-          <div key={feature.feature_id} className="card">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-4">
-                <div className="bg-azul-primary/20 text-azul-primary px-4 py-2 rounded-lg font-mono font-bold">
-                  {feature.feature_id}
-                </div>
-                <div>
-                  <p className="text-branco-text font-medium">
-                    m/z: <span className="text-verde-accent">{feature.mz.toFixed(4)}</span>
-                  </p>
-                  <p className="text-cinza-muted text-sm">
-                    RT: {feature.rt.toFixed(2)} min
-                  </p>
+          <article key={feature.feature_id} className="feature-card">
+            <div className="feature-card-header">
+              <div className="feature-meta">
+                <div className="feature-id-badge">{feature.feature_id}</div>
+                <div className="feature-specs">
+                  <p className="spec-mz">m/z: <span>{feature.mz.toFixed(4)}</span></p>
+                  <p className="spec-rt">RT: {feature.rt.toFixed(2)} min</p>
                 </div>
               </div>
               <button
-                onClick={() => setSelectedFeature(
-                  selectedFeature === feature.feature_id ? null : feature.feature_id
-                )}
-                className="btn-secondary"
+                onClick={() => setSelectedFeature(selectedFeature === feature.feature_id ? null : feature.feature_id)}
+                className="btn btn-ghost"
               >
                 {selectedFeature === feature.feature_id ? 'Ocultar' : 'Ver Detalhes'}
               </button>
             </div>
             
-            {/* Tabela de Candidatos */}
-            <div className="overflow-x-auto">
-              <table className="w-full">
+            <div className="table-container">
+              <table className="ranking-table">
                 <thead>
-                  <tr className="table-header border-b border-cinza-dark">
-                    <th className="px-4 py-3 text-left">Rank</th>
-                    <th className="px-4 py-3 text-left">Composto</th>
-                    <th className="px-4 py-3 text-left">Fórmula</th>
-                    <th className="px-4 py-3 text-left">Probabilidade</th>
-                    <th className="px-4 py-3 text-left">Erro (ppm)</th>
-                    <th className="px-4 py-3 text-left">Fonte</th>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Composto</th>
+                    <th>Fórmula</th>
+                    <th>Probabilidade</th>
+                    <th>Erro (ppm)</th>
+                    <th>Fonte</th>
                   </tr>
                 </thead>
                 <tbody>
                   {feature.candidates.map((candidate) => (
-                    <tr key={candidate.rank} className="table-row">
-                      <td className="px-4 py-3">
-                        <div className="flex items-center space-x-2">
-                          <TrendingUp 
-                            size={16} 
-                            className={candidate.rank === 1 ? 'text-verde-accent' : 'text-cinza-muted'} 
-                          />
-                          <span className="font-bold text-branco-text">#{candidate.rank}</span>
+                    <tr key={candidate.rank}>
+                      <td>
+                        <div className="rank-cell">
+                          <TrendingUp size={14} className={candidate.rank === 1 ? 'icon-top' : 'icon-muted'} />
+                          <span className="rank-number">#{candidate.rank}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-branco-text font-medium">{candidate.name}</td>
-                      <td className="px-4 py-3 font-mono text-cinza-muted">{candidate.formula}</td>
-                      <td className="px-4 py-3">
-                        <span className={`font-bold ${getProbabilityColor(candidate.probability)}`}>
+                      <td className="compound-name">{candidate.name}</td>
+                      <td className="compound-formula">{candidate.formula}</td>
+                      <td>
+                        <span className={`prob-text ${getProbClass(candidate.probability)}`}>
                           {(candidate.probability * 100).toFixed(1)}%
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-cinza-muted">{candidate.mass_error_ppm.toFixed(1)}</td>
-                      <td className="px-4 py-3">
-                        <span className={`px-2 py-1 rounded text-sm ${getSourceBadgeColor(candidate.source)}`}>
+                      <td className="text-muted">{candidate.mass_error_ppm.toFixed(1)}</td>
+                      <td>
+                        <span className={`badge-source ${candidate.source.toLowerCase()}`}>
                           {candidate.source}
                         </span>
                       </td>
@@ -174,31 +150,13 @@ function Top5Ranking() {
                 </tbody>
               </table>
             </div>
-            
-            {/* Detalhes Expandidos */}
-            {selectedFeature === feature.feature_id && (
-              <div className="mt-4 pt-4 border-t border-cinza-dark">
-                <div className="bg-azul-primary/10 border border-azul-primary/30 rounded-lg p-4">
-                  <div className="flex items-start space-x-2">
-                    <AlertCircle className="text-azul-primary mt-1" size={20} />
-                    <div>
-                      <h4 className="text-azul-primary font-semibold mb-2">Informações Adicionais</h4>
-                      <p className="text-cinza-muted text-sm">
-                        O ranking considera erro de massa (40%), fragmentação (30%), score do software (20%) 
-                        e padrão isotópico (10%), ajustado por abundância e estabilidade entre replicatas.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+          </article>
         ))}
       </div>
-      
+
       {filteredData.length === 0 && (
-        <div className="card text-center py-12">
-          <p className="text-cinza-muted">Nenhuma feature encontrada com os critérios de busca.</p>
+        <div className="empty-state">
+          <p>Nenhuma feature encontrada.</p>
         </div>
       )}
     </div>

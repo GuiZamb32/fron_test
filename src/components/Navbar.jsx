@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { BarChart3, TrendingUp, Upload, Database } from 'lucide-react'
+import './Navbar.css'
 
 function Navbar() {
   const location = useLocation()
@@ -12,47 +13,41 @@ function Navbar() {
   ]
   
   return (
-    <nav className="bg-preto-elevated border-b border-cinza-dark">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-verde-accent to-azul-primary rounded-lg flex items-center justify-center">
-             <span className="flex items-center">
-              <img 
-                src="/logo.png" 
-                alt="" 
-                className="h-8 w-auto" 
-              />
-            </span>
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-branco-text">QuimioAnalytics</h1>
-              <p className="text-xs text-cinza-muted">Pipeline ETL · IST Ambiental</p>
+    <nav className="navbar">
+      <div className="navbar-container">
+        
+        {/* Branding */}
+        <div className="navbar-brand">
+          <div className="brand-logo">
+           <img src="./src/public/logo.png" alt="logo" />
+          </div>
+          <div className="brand-text">
+              <h1 className="brand-title">
+                Quimio<span className="text-verde-analytics">Analytics</span>
+              </h1>
+              <p className="brand-subtitle">Inteligência em Dados Químicos</p>
             </div>
           </div>
-          
-          <div className="flex space-x-1">
-            {navItems.map((item) => {
-              const Icon = item.icon
-              const isActive = location.pathname === item.path
-              
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-                    isActive
-                      ? 'bg-azul-primary text-white'
-                      : 'text-cinza-muted hover:text-branco-text hover:bg-preto-pure'
-                  }`}
-                >
-                  <Icon size={18} />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              )
-            })}
-          </div>
+        
+        {/* Navegação */}
+        <div className="nav-menu">
+          {navItems.map((item) => {
+            const Icon = item.icon
+            const isActive = location.pathname === item.path
+            
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`nav-item ${isActive ? 'active' : ''}`}
+              >
+                <Icon size={18} className="nav-icon" />
+                <span className="nav-label">{item.label}</span>
+              </Link>
+            )
+          })}
         </div>
+
       </div>
     </nav>
   )
