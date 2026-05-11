@@ -58,8 +58,7 @@ A interface utiliza um tema **Dark Mode** de alto contraste, otimizado para long
 
 1.  **Clonar o repositório:**
     ```bash
-    git clone [https://github.com/seu-usuario/quimio-analytics.git](https://github.com/seu-usuario/quimio-analytics.git)
-    cd quimio-analytics
+    git clone [https://github.com/GuiZamb32/fron_test.git](https://github.com/GuiZamb32/fron_test.git)
     ```
 
 2.  **Instalar dependências:**
